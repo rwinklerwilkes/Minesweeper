@@ -9,6 +9,8 @@ class Board:
         self.diff = difficulty
         self.size = Constants.diff[difficulty]
         self.squares = self.create_squares()
+        self.set_neigh()
+
     def create_squares(self):
         num_mines = Constants.mine[self.diff]
         s = self.size
@@ -25,18 +27,29 @@ class Board:
 
         #last, we need to set the mines
         for i in mines:
-            squares[i[0]][i[1]].is_mine = True
+            squares[i[0]][i[1]].mine = True
+            squares[i[0]][i[1]].img = 'Images/mine.png'
 
         return squares
 
+    def set_neigh(self):
+        for row in range(len(self.squares)):
+            for col in range(len(self.squares)):
+                neigh = 0
+                #check the neighbors here
+
 class Square:
-    def __init__(self,is_down = False,is_mine=False,is_flagged=False):
+    def __init__(self,is_down = False,is_mine=False,is_flagged=False,neigh=0):
         #the size in pixels - this is the size of the image 16x16
         self.size = 16
+        #whether the square has been clicked
         self.down = is_down
+        #if the square is a mine
         self.mine = is_mine
+        #if the user has flagged the square
         self.flagged = is_flagged
         self.img = 'Images/square.png'
+        self.neigh = neigh
     def flag(self):
         self.flagged = not self.flagged
 
