@@ -13,6 +13,7 @@ class Game:
     def draw(self):
         self.gui.redraw(self.board)
 
+
 def main():
     pygame.init()
     g = Game()
@@ -23,8 +24,17 @@ def main():
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == Constants.LEFT:
-                pass
+                x,y = pygame.mouse.get_pos()
+                sq = g.board.get_square_at(x,y)
+                if not sq.down:
+                    sq.set_down()
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == Constants.RIGHT:
+                x,y = pygame.mouse.get_pos()
+                sq = g.board.get_square_at(x,y)
+                sq.set_flag()
+
         g.clock.tick(g.fps)
+
 
 if __name__ == '__main__':
     main()

@@ -9,6 +9,11 @@ mine = {'easy':3,'medium':10,'hard':30}
 #grey, in RGB
 grey = (211,211,211)
 #match number of neighbors to images
-img = {i:'Images/' + str(i) + '.png' for i in range(1,9)}
+digit_img= {i:'Images/' + str(i) + '.png' for i in range(1,9)}
 #set number 3 from top and left, in pixels
 sq_num_offset = 3
+img = ['Images/square.png','Images/flag.png','Images/mine.png','Images/down.png']
+img_square = 0
+img_flag = 1
+img_mine = 2
+img_down = 3
