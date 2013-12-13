@@ -18,12 +18,12 @@ class GUI:
                 cur_sq = sq[row][col]
                 top = row*16
                 left = col*16
-                if cur_sq.mine and not cur_sq.down:
-                    self.surface.blit(pygame.image.load(Constants.img[Constants.img_square]),(left,top))
-                elif cur_sq.down and cur_sq.neigh > 0 and not cur_sq.mine:
+                if cur_sq.down and cur_sq.neigh > 0 and not cur_sq.mine:
+                    #in this case, we know there are neighboring mines, and want to draw the numbers
                     num_img = pygame.image.load(Constants.digit_img[cur_sq.neigh])
                     self.surface.blit(pygame.image.load(cur_sq.get_img()),(left,top))
                     self.surface.blit(num_img,(left+Constants.sq_num_offset,top+Constants.sq_num_offset))
                 else:
+                    #otherwise, it's flagged, or empty, or clicked, so just draw it
                     self.surface.blit(pygame.image.load(cur_sq.get_img()),(left,top))
         self.update()

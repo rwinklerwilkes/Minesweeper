@@ -26,7 +26,9 @@ def main():
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == Constants.LEFT:
                 x,y = pygame.mouse.get_pos()
                 sq = g.board.get_square_at(x,y)
-                if not sq.down:
+                if sq.neigh==0 and not sq.mine:
+                    g.board.draw_neighbors(sq)
+                elif not sq.down:
                     sq.set_down()
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == Constants.RIGHT:
                 x,y = pygame.mouse.get_pos()

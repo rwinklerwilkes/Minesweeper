@@ -25,12 +25,11 @@ class Board:
         for row in range(s):
             squares.append([])
             for column in range(s):
-                squares[row].append(Square())
+                squares[row].append(Square(row,column))
 
         #last, we need to set the mines
         for i in mines:
             squares[i[0]][i[1]].mine = True
-            squares[i[0]][i[1]].img = Constants.img_mine
 
         return squares
 
@@ -57,6 +56,27 @@ class Board:
                     neighbors.append(s[i][j])
         return neighbors
 
+    def all_neighbors(self,row,col):
+        neighbors = []
+        for i in range(row-1,row+2):
+            for j in range(col-1,col+2):
+                if i<0 or i>=len(self.squares):
+                    continue
+                if j<0 or j>=len(self.squares[i]):
+                    continue
+                if not self.squares[i][j].down:
+                    neighbors.append(self.squares[i][j])
+        return neighbors
+
+    def draw_neighbors(self,square):
+        stack = [square]
+        while len(stack) > 0:
+            cur_sq = stack.pop()
+            cur_sq.set_down()
+            if cur_sq.neigh == 0:
+                stack += self.all_neighbors(cur_sq.row,cur_sq.col)
+
+
     def get_square_at(self,x,y):
         x_val = int(math.floor(x/16))
         y_val = int(math.floor(y/16))
@@ -64,7 +84,7 @@ class Board:
 
 
 class Square:
-    def __init__(self,is_down = False,is_mine=False,is_flagged=False,neigh=0,revealed = False):
+    def __init__(self,row,col,is_down = False,is_mine=False,is_flagged=False,neigh=0,):
         #the size in pixels - this is the size of the image 16x16
         self.size = 16
         #whether the square has been clicked
@@ -75,9 +95,11 @@ class Square:
         self.flagged = is_flagged
         self.img = Constants.img_square
         self.neigh = neigh
+        self.row = row
+        self.col = col
 
     def set_flag(self):
-        if not self.mine:
+        if not self.down:
             self.flagged = not self.flagged
             self.img = (self.img + 1) % 2
 
@@ -86,7 +108,10 @@ class Square:
 
     def set_down(self):
         self.down = True
-        self.img = Constants.img_down
+        if not self.mine:
+            self.img = Constants.img_down
+        else:
+            self.img = Constants.img_mine
 
 
 def pick_mines(num_mines,size):
